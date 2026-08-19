@@ -1,5 +1,5 @@
 import "./App.css";
-import { Footer, Header } from "./navbar";
+import { FloatingActions, Footer, Header } from "./navbar";
 import Home from "./home";
 import AboutUs from "./about-us";
 import Volunteer from "./volunteer";
@@ -23,6 +23,7 @@ function App() {
       <Header activePage={page} />
       <main>{pages[page] || <Home />}</main>
       <Footer />
+      <FloatingActions />
     </>
   );
 }
