@@ -1,4 +1,5 @@
 import { Arrow } from "./navbar";
+import Hero from "./assets/women.png";
 
 export default function Home() {
   return (
@@ -25,10 +26,7 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-visual">
-          <img
-            src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=1200&q=85"
-            alt="An Indian woman smiling confidently outdoors"
-          />
+          <img src={Hero} alt="An Indian woman smiling confidently outdoors" />
           <div className="hero-note">
             <strong>01</strong>
             <span>
