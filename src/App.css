@@ -19,17 +19,15 @@
   align-items: center;
   gap: 11px;
 }
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 43px;
-  height: 43px;
-  border-radius: 50%;
-  color: #f8eee4;
-  background: #632d45;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
+.brand-logo {
+  display: block;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+.footer-logo {
+  width: 64px;
+  height: 64px;
 }
 .brand-name {
   color: #632d45;
@@ -912,4 +910,230 @@ h3 {
   .contact-form {
     padding: 25px;
   }
+}
+
+#root {
+  background: #f8fbff;
+}
+
+.site-header,
+.hero,
+.donation-section {
+  background: #f8fbff;
+}
+
+.site-header,
+.donation-section {
+  border-color: #cbd8f0;
+}
+
+.brand-name,
+.main-nav,
+.main-nav a:hover,
+.main-nav .active,
+.header-cta,
+.hero h1,
+.mission h2,
+.section-heading h2,
+.text-link,
+.program-grid h3,
+.program-grid a,
+.donation-section h2,
+.inner-heading h1,
+.about-content h2,
+.contact-details h2,
+.volunteer-list h2,
+.detail a:hover,
+.contact-form label {
+  color: #15236b;
+}
+
+.brand-name em,
+.eyebrow,
+.hero h1 span,
+.program-grid span,
+.program-number,
+.volunteer-list span,
+.detail span {
+  color: #f15a24;
+}
+
+.main-nav a:hover,
+.main-nav .active,
+.text-link {
+  border-color: #f15a24;
+}
+
+.header-cta,
+.mobile-toggle {
+  border-color: #15236b;
+}
+
+.mobile-toggle span {
+  background: #15236b;
+}
+
+.hero-intro,
+.mission-copy,
+.section-heading > p,
+.program-grid p,
+.donation-section > div > p:last-child,
+.inner-heading > p:last-child,
+.about-content p:not(.eyebrow),
+.volunteer-list p,
+.detail p,
+.detail a {
+  color: #53617d;
+}
+
+.button-dark,
+.hero-note,
+.impact-strip,
+.floating-call {
+  background: #15236b;
+}
+
+.button-orange,
+.program-grid .program-feature,
+.volunteer-callout {
+  background: #f15a24;
+}
+
+.button-orange:hover {
+  background: #df241d;
+}
+
+.button-dark,
+.button-orange,
+.button-light,
+.impact-strip,
+.program-grid .program-feature,
+.volunteer-callout,
+.site-footer,
+.floating-action,
+.floating-action:hover {
+  color: #ffffff;
+}
+
+.button-light {
+  color: #15236b;
+  background: #eaf1ff;
+}
+
+.hero-visual:after {
+  border-color: #5b8dde;
+}
+
+.hero-note strong,
+.impact-strip p,
+.impact-strip span,
+.hero-note .eyebrow,
+.site-footer .eyebrow,
+.footer-social a span {
+  color: #ff9d1c;
+}
+
+.sun-stamp {
+  color: #15236b;
+  background: #ff9d1c;
+}
+
+.impact-strip p,
+.impact-strip span {
+  color: #ff9d1c;
+}
+
+.mission,
+.donation-section,
+.inner-page {
+  background: #f8fbff;
+}
+
+.community-photo {
+  background: #15236b;
+}
+
+.community-photo-caption .eyebrow {
+  color: #ff9d1c;
+}
+
+.programs,
+.contact-form {
+  background: #eaf1ff;
+}
+
+.program-grid,
+.program-grid article,
+.volunteer-list,
+.volunteer-list > div,
+.detail {
+  border-color: #b9c9e8;
+}
+
+.program-icon {
+  border-color: #63a86b;
+  color: #168a18;
+}
+
+.program-grid .program-feature a,
+.program-grid .program-feature span,
+.program-feature h3,
+.program-feature p {
+  color: #ffffff;
+}
+
+.program-grid .program-feature .program-icon {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.volunteer-callout .eyebrow {
+  color: #ffe0a3;
+}
+
+.volunteer-callout h2 i {
+  color: #ffcf39;
+}
+
+.site-footer {
+  background: #101a49;
+}
+
+.footer-brand p span,
+.footer-contact p:last-child {
+  color: #aebce0;
+}
+
+.footer-links a:hover,
+.footer-contact a:hover,
+.footer-social a:hover {
+  color: #ff9d1c;
+}
+
+.floating-whatsapp {
+  background: #168a18;
+}
+
+.floating-whatsapp:hover {
+  background: #0c6d12;
+}
+
+.floating-call:hover {
+  background: #df241d;
+}
+
+.footer-bottom {
+  border-color: #344577;
+  color: #8c9bc1;
+}
+
+.contact-form input,
+.contact-form textarea {
+  border-color: #9db2da;
+  color: #15236b;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #f15a24;
 }

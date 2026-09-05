@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { contact } from "./contact-info";
+import logo from "./assets/logoo.png";
+import logoo from "./assets/logo.png";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -22,12 +24,12 @@ export function Header({ activePage }) {
   return (
     <header className={`site-header ${isMenuOpen ? "menu-open" : ""}`}>
       <a className="brand" href="/" aria-label="People Seva Foundation home">
-        <span className="brand-mark">PSF</span>
-        <span className="brand-name">
+        <img className="brand-logo" src={logo} alt="People Seva Foundation" />
+        {/* <span className="brand-name">
           People Seva
           <br />
           <em>Foundation</em>
-        </span>
+        </span> */}
       </a>
       <button
         className="mobile-toggle"
@@ -65,7 +67,11 @@ export function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-brand">
-        <span className="brand-mark">PSF</span>
+        <img
+          className="brand-logo footer-logo"
+          src={logoo}
+          alt="People Seva Foundation"
+        />
         <p>
           People Seva Foundation
           <br />
