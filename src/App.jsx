@@ -25,6 +25,7 @@ function BrandIntro({ onComplete }) {
         className="brand-intro-video"
         src={logoAnimation}
         autoPlay
+        preload="auto"
         muted
         playsInline
         onEnded={onComplete}

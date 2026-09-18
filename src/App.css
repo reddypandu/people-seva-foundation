@@ -2614,8 +2614,7 @@ body,
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: var(--navy);
-  animation: intro-in 0.25s ease-out;
+  background: #fbfcff;
 }
 
 .brand-intro::before,
