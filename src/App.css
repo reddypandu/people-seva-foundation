@@ -1652,6 +1652,35 @@ h3 {
     padding: 14px 6%;
   }
 
+  .site-header.menu-open {
+    background: var(--card);
+    box-shadow: 0 12px 28px rgba(91, 47, 37, 0.12);
+  }
+
+  .menu-open .main-nav {
+    gap: 0;
+    margin: 0;
+    padding: 8px 0 4px;
+    border-top: 1px solid var(--line);
+    background: var(--card);
+  }
+
+  .menu-open .main-nav a {
+    display: block;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(232, 217, 202, 0.8);
+    color: var(--navy);
+  }
+
+  .menu-open .main-nav a:last-child {
+    border-bottom: 0;
+  }
+
+  .menu-open .main-nav a:hover,
+  .menu-open .main-nav .active {
+    background: var(--orange-soft);
+  }
+
   .brand-logo {
     width: 64px;
     height: 64px;
