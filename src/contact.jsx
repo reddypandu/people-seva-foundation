@@ -11,6 +11,7 @@ export default function Contact() {
           more, our door is open.
         </p>
       </div>
+
       <div className="contact-layout">
         <div className="contact-details">
           <p className="eyebrow">Find us here</p>
@@ -30,6 +31,7 @@ export default function Contact() {
             <a href={`mailto:${contact.email}`}>{contact.email}</a>
           </div>
         </div>
+
         <form
           className="contact-form"
           onSubmit={(event) => event.preventDefault()}

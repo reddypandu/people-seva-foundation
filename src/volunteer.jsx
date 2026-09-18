@@ -12,6 +12,7 @@ export default function Volunteer() {
           make support feel closer and more possible.
         </p>
       </div>
+
       <div className="volunteer-content">
         <div className="volunteer-list">
           <div>
@@ -36,6 +37,7 @@ export default function Volunteer() {
             </p>
           </div>
         </div>
+
         <a
           className="button button-dark"
           href={`mailto:${contact.email}?subject=Volunteer with People Seva`}

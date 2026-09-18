@@ -6,9 +6,10 @@ export default function AboutUs() {
         <h1>A little support can change everything.</h1>
         <p>
           We are a people-first foundation working for a more confident,
-          capable, and equal tomorrow for women.
+          capable, and equal tomorrow for women and families.
         </p>
       </div>
+
       <div className="about-content">
         <img
           src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=85"
