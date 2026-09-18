@@ -6,7 +6,36 @@ import Volunteer from "./volunteer";
 import Contact from "./contact";
 import Blogs from "./blogs";
 import Faqs from "./faqs";
+import logoAnimation from "./assets/logo_animation.mp4";
 import { useEffect, useState } from "react";
+
+function BrandIntro({ onComplete }) {
+  useEffect(() => {
+    const fallback = window.setTimeout(onComplete, 6000);
+    return () => window.clearTimeout(fallback);
+  }, [onComplete]);
+
+  return (
+    <div
+      className="brand-intro"
+      role="status"
+      aria-label="Loading People Seva Foundation"
+    >
+      <video
+        className="brand-intro-video"
+        src={logoAnimation}
+        autoPlay
+        muted
+        playsInline
+        onEnded={onComplete}
+        onError={onComplete}
+      />
+      <button type="button" className="brand-intro-skip" onClick={onComplete}>
+        Skip intro
+      </button>
+    </div>
+  );
+}
 
 function DonationModal({ isOpen, onClose }) {
   const [amount, setAmount] = useState("");
@@ -178,6 +207,7 @@ function updateMetaTag(attribute, value, content) {
 
 function App() {
   const [isDonationOpen, setIsDonationOpen] = useState(false);
+  const [showBrandIntro, setShowBrandIntro] = useState(true);
   const page =
     window.location.pathname === "/"
       ? "/"
@@ -191,6 +221,10 @@ function App() {
     updateMetaTag("property", "og:description", seo.description);
   }, [page]);
 
+  const completeBrandIntro = () => {
+    setShowBrandIntro(false);
+  };
+
   const pages = {
     "/": <Home onDonateClick={() => setIsDonationOpen(true)} />,
     "/about": <AboutUs />,
@@ -202,6 +236,7 @@ function App() {
 
   return (
     <>
+      {showBrandIntro && <BrandIntro onComplete={completeBrandIntro} />}
       <Header activePage={page} onDonateClick={() => setIsDonationOpen(true)} />
       <main>
         {pages[page] || <Home onDonateClick={() => setIsDonationOpen(true)} />}
