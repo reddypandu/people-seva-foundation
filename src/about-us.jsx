@@ -1,3 +1,5 @@
+import AboutPageImg from "./assets/about-page.png";
+
 export default function AboutUs() {
   return (
     <section className="inner-page">
@@ -11,10 +13,7 @@ export default function AboutUs() {
       </div>
 
       <div className="about-content">
-        <img
-          src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=85"
-          alt="Woman looking toward the camera"
-        />
+        <img src={AboutPageImg} alt="Woman looking toward the camera" />
         <div>
           <p className="eyebrow">Our belief</p>
           <h2>

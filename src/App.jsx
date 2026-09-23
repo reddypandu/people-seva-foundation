@@ -208,11 +208,11 @@ function updateMetaTag(attribute, value, content) {
 
 function App() {
   const [isDonationOpen, setIsDonationOpen] = useState(false);
-  const [showBrandIntro, setShowBrandIntro] = useState(true);
   const page =
     window.location.pathname === "/"
       ? "/"
       : `/${window.location.pathname.split("/")[1]}`;
+  const [showBrandIntro, setShowBrandIntro] = useState(page === "/");
 
   useEffect(() => {
     const seo = seoByPage[page] || seoByPage["/"];
@@ -237,7 +237,9 @@ function App() {
 
   return (
     <>
-      {showBrandIntro && <BrandIntro onComplete={completeBrandIntro} />}
+      {page === "/" && showBrandIntro && (
+        <BrandIntro onComplete={completeBrandIntro} />
+      )}
       <Header activePage={page} onDonateClick={() => setIsDonationOpen(true)} />
       <main>
         {pages[page] || <Home onDonateClick={() => setIsDonationOpen(true)} />}

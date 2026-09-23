@@ -1,8 +1,9 @@
 import { Arrow } from "./navbar";
-import Hero from "./assets/women.png";
+import HeroImg from "./assets/hero-img.png";
 import { BlogPreview } from "./blogs";
 import { FaqPreview } from "./faqs";
 import { useEffect, useRef, useState } from "react";
+import AboutImg from "./assets/about-section-img.png";
 
 const impactStats = [
   { label: "Women supported", value: 2500 },
@@ -92,61 +93,65 @@ function AnimatedStat({ value }) {
 export default function Home({ onDonateClick }) {
   return (
     <>
-      <section className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">People Seva Foundation · Care for life</p>
-          <h1>
-            Every life deserves
-            <span> care, dignity, and a future full of possibility.</span>
-          </h1>
-          <p className="hero-intro">
-            We work alongside children, women, families, and communities through
-            care, education, wellbeing, and opportunity.
-          </p>
-          <div className="hero-actions">
-            <button
-              type="button"
-              className="button button-orange"
-              onClick={onDonateClick}
-            >
-              Donate now <Arrow />
-            </button>
-            <a className="text-link" href="/about">
-              Discover our work <Arrow />
-            </a>
-          </div>
-          <div
-            className="hero-proof"
-            aria-label="People Seva Foundation values"
-          >
-            <span>
-              <strong>01</strong> Care first
-            </span>
-            <span>
-              <strong>02</strong> Local action
-            </span>
-            <span>
-              <strong>03</strong> Lasting change
-            </span>
-          </div>
+      <section className="hero hero-full-bg">
+        <div className="hero-bg-media">
+          <img
+            src={HeroImg}
+            alt="Empowered Indian women in community outreach program"
+            className="hero-bg-img"
+          />
+          <div className="hero-bg-overlay" />
         </div>
 
-        <div className="hero-visual">
-          <span className="hero-frame-label">A future built together</span>
-          <img
-            src={Hero}
-            alt="Women smiling together in a community outreach program"
-          />
-          <div className="hero-panel panel-one">
-            <span className="panel-label">OUR REACH</span>
-            <strong>2,500+</strong>
-            <small>
-              People reached through care, learning, and community support.
-            </small>
+        <div className="hero-container">
+          <div className="hero-copy">
+            <p className="eyebrow">People Seva Foundation · Care for life</p>
+            <h1>
+              Every life deserves
+              <span> care, dignity, and a future full of possibility.</span>
+            </h1>
+            <p className="hero-intro">
+              We work alongside children, women, families, and communities through
+              care, education, wellbeing, and opportunity.
+            </p>
+            <div className="hero-actions">
+              <button
+                type="button"
+                className="hero-btn-donate"
+                onClick={onDonateClick}
+              >
+                Donate Now <span className="btn-icon">♥</span>
+              </button>
+              <a className="hero-btn-primary" href="/about">
+                Our Programs <Arrow />
+              </a>
+              <a className="hero-btn-outline" href="/about">
+                About Us
+              </a>
+            </div>
+            <div
+              className="hero-proof"
+              aria-label="People Seva Foundation values"
+            >
+              <span>
+                <strong>01</strong> Care first
+              </span>
+              <span>
+                <strong>02</strong> Local action
+              </span>
+              <span>
+                <strong>03</strong> Lasting change
+              </span>
+            </div>
           </div>
-          <div className="hero-panel panel-two">
-            <strong>01</strong>
-            <span>Small acts. Lasting change.</span>
+
+          <div className="hero-right-action">
+
+            <div className="hero-reach-pill">
+              <span className="reach-label">Our Impact</span>
+              <strong>2,500+</strong>
+              <small>People reached through care & empowerment.</small>
+            </div>
           </div>
         </div>
       </section>
@@ -163,7 +168,7 @@ export default function Home({ onDonateClick }) {
       <section className="story-section section-shell">
         <div className="story-image">
           <img
-            src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=85"
+            src={AboutImg}
             alt="Women participating in community work together"
           />
         </div>
