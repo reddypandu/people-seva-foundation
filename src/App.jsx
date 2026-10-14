@@ -7,7 +7,7 @@ import Contact from "./contact";
 import Blogs from "./blogs";
 import Faqs from "./faqs";
 import logoAnimation from "./assets/logo_animation.mp4";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 function BrandIntro({ onComplete }) {
   useEffect(() => {
@@ -38,12 +38,61 @@ function BrandIntro({ onComplete }) {
   );
 }
 
+let razorpayScriptPromise;
+
+function loadRazorpayCheckout() {
+  if (window.Razorpay) return Promise.resolve();
+  if (razorpayScriptPromise) return razorpayScriptPromise;
+
+  razorpayScriptPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => {
+      if (window.Razorpay) {
+        resolve();
+      } else {
+        razorpayScriptPromise = undefined;
+        reject(new Error("Razorpay Checkout could not be loaded."));
+      }
+    };
+    script.onerror = () => {
+      razorpayScriptPromise = undefined;
+      reject(new Error("Razorpay Checkout could not be loaded."));
+    };
+    document.body.appendChild(script);
+  });
+
+  return razorpayScriptPromise;
+}
+
 function DonationModal({ isOpen, onClose }) {
+  const [step, setStep] = useState(1);
   const [amount, setAmount] = useState("");
-  const [name, setName] = useState("Priya Sharma");
+  const [isCustomAmount, setIsCustomAmount] = useState(false);
+  const [purpose, setPurpose] = useState("General Fund");
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("priya@example.com");
-  const [pan, setPan] = useState("ABCDE1234F");
+  const [email, setEmail] = useState("");
+  const [isPaying, setIsPaying] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const [paymentReference, setPaymentReference] = useState("");
+  const [copyStatus, setCopyStatus] = useState("");
+
+  const handleClose = useCallback(() => {
+    setStep(1);
+    setAmount("");
+    setIsCustomAmount(false);
+    setPurpose("General Fund");
+    setName("");
+    setPhone("");
+    setEmail("");
+    setIsPaying(false);
+    setPaymentError("");
+    setPaymentReference("");
+    setCopyStatus("");
+    onClose();
+  }, [onClose]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -60,21 +109,91 @@ function DonationModal({ isOpen, onClose }) {
     if (!isOpen) return;
 
     const handleKeyDown = (event) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") handleClose();
     };
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, handleClose]);
+
+  const handlePayment = async (event) => {
+    event.preventDefault();
+    setPaymentError("");
+
+    const key = import.meta.env.VITE_RAZORPAY_KEY_ID;
+    if (!key) {
+      setPaymentError(
+        "Razorpay is not configured yet. Add your public key as VITE_RAZORPAY_KEY_ID and restart the app.",
+      );
+      return;
+    }
+
+    setIsPaying(true);
+    try {
+      await loadRazorpayCheckout();
+      const checkout = new window.Razorpay({
+        key,
+        amount: Math.round(Number(amount) * 100),
+        currency: "INR",
+        name: "People Seva Foundation",
+        description: `Donation - ${purpose}`,
+        prefill: { name, email, contact: phone },
+        notes: { purpose },
+        theme: { color: "#c8683d" },
+        handler: (response) => {
+          setPaymentReference(response.razorpay_payment_id);
+          setIsPaying(false);
+        },
+        modal: {
+          ondismiss: () => setIsPaying(false),
+        },
+      });
+
+      checkout.on("payment.failed", (response) => {
+        setPaymentError(
+          response.error?.description ||
+            "The payment could not be completed. Please try again.",
+        );
+        setIsPaying(false);
+      });
+      checkout.open();
+    } catch (error) {
+      setPaymentError(
+        error instanceof Error
+          ? error.message
+          : "Razorpay Checkout could not be opened. Please try again.",
+      );
+      setIsPaying(false);
+    }
+  };
+
+  const handleCopy = async (value, label) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopyStatus(`${label} copied`);
+    } catch {
+      setCopyStatus(
+        `Could not copy ${label.toLowerCase()}. Please select and copy it manually.`,
+      );
+    }
+  };
+
+  const upiPaymentUri = new URLSearchParams({
+    pa: "peopleservafoundation0@*****",
+    pn: "Peoples Seva Foundation",
+    ...(amount ? { am: amount, cu: "INR" } : {}),
+  }).toString();
 
   return (
     <div
-      className={`donation-modal-overlay ${isOpen ? "open" : ""}`}
-      onClick={onClose}
+      className={`donation-modal-overlay donation-modal-overlay-flow ${
+        isOpen ? "open" : ""
+      }`}
+      onClick={handleClose}
       aria-hidden={!isOpen}
     >
       <div
-        className="donation-modal"
+        className="donation-modal donation-modal-flow"
         role="dialog"
         aria-modal="true"
         aria-label="Donation form"
@@ -83,81 +202,359 @@ function DonationModal({ isOpen, onClose }) {
         <button
           type="button"
           className="modal-close"
-          onClick={onClose}
+          onClick={handleClose}
           aria-label="Close donation form"
         >
           ×
         </button>
 
-        <h2>Choose How You Want To Create Impact</h2>
-        <p>
-          Every contribution helps strengthen protection, education, nutrition,
-          healthcare, and opportunities for every child.
-        </p>
-
-        <div className="donation-form">
-          <label className="field-group">
-            <span>CHOOSE AMOUNT</span>
-            <div className="amount-box">
-              <span className="currency">₹</span>
-              <input
-                type="number"
-                value={amount}
-                onChange={(event) => setAmount(event.target.value)}
-                placeholder="Enter amount"
-                aria-label="Donation amount"
-              />
-            </div>
-          </label>
-
-          <div className="detail-grid">
-            <label className="field-group">
-              <span>Full Name *</span>
-              <input
-                type="text"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
-            </label>
-
-            <label className="field-group">
-              <span>Phone Number *</span>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-                placeholder="10-digit Phone"
-              />
-            </label>
-
-            <label className="field-group">
-              <span>Email</span>
-              <input
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </label>
-
-            <label className="field-group">
-              <span>PAN (80G receipt)</span>
-              <input
-                type="text"
-                value={pan}
-                onChange={(event) => setPan(event.target.value)}
-              />
-            </label>
+        {paymentReference ? (
+          <div className="donation-payment-success" role="status">
+            <span className="donation-success-icon" aria-hidden="true">
+              ✓
+            </span>
+            <p className="donation-step-label">Payment response received</p>
+            <h2>Thank you for your support!</h2>
+            <p>
+              Razorpay returned payment reference{" "}
+              <strong>{paymentReference}</strong>. Please keep it for your
+              records.
+            </p>
+            <p className="donation-note">
+              This website does not verify payments or issue receipts
+              server-side yet. Please contact the foundation to confirm your
+              donation.
+            </p>
+            <button
+              type="button"
+              className="donation-primary-button"
+              onClick={handleClose}
+            >
+              Done
+            </button>
           </div>
+        ) : (
+          <>
+            <div className="donation-modal-heading">
+              <p className="donation-step-label">
+                Step {step} of 2 ·{" "}
+                {step === 1 ? "Donation details" : "Your details"}
+              </p>
+              <h2>
+                {step === 1
+                  ? "Make a difference today"
+                  : "A few details to continue"}
+              </h2>
+              <p>
+                {step === 1
+                  ? "Choose an amount and the cause you would like to support."
+                  : "Your details help us acknowledge your contribution."}
+              </p>
+            </div>
 
-          <p className="donation-note">
-            Donations are eligible for 80G tax exemption. Your information is
-            safe and secure.
-          </p>
+            <div
+              className="donation-step-progress"
+              role="progressbar"
+              aria-label={`Step ${step} of 2`}
+              aria-valuemin="1"
+              aria-valuemax="2"
+              aria-valuenow={step}
+            >
+              <span className={step >= 1 ? "complete" : ""} />
+              <span className={step >= 2 ? "complete" : ""} />
+            </div>
 
-          <button type="button" className="donate-submit">
-            Donate ₹{amount || 0}
-          </button>
-        </div>
+            {step === 1 ? (
+              <div className="donation-step-content">
+                <fieldset className="donation-amount-fieldset">
+                  <legend>Select amount (INR)</legend>
+                  <div className="donation-amount-options">
+                    {[500, 1000, 2500, 5000].map((preset) => (
+                      <button
+                        type="button"
+                        key={preset}
+                        className={`donation-amount-option ${
+                          !isCustomAmount && Number(amount) === preset
+                            ? "selected"
+                            : ""
+                        }`}
+                        aria-pressed={
+                          !isCustomAmount && Number(amount) === preset
+                        }
+                        onClick={() => {
+                          setAmount(String(preset));
+                          setIsCustomAmount(false);
+                        }}
+                      >
+                        ₹{preset.toLocaleString("en-IN")}
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className={`donation-custom-option ${isCustomAmount ? "selected" : ""}`}
+                    aria-pressed={isCustomAmount}
+                    onClick={() => {
+                      setIsCustomAmount(true);
+                      setAmount("");
+                    }}
+                  >
+                    Custom amount
+                  </button>
+                </fieldset>
+
+                {isCustomAmount && (
+                  <label className="donation-input-label">
+                    <span>Enter amount</span>
+                    <div className="donation-currency-input">
+                      <span aria-hidden="true">₹</span>
+                      <input
+                        type="number"
+                        min="1"
+                        step="1"
+                        value={amount}
+                        onChange={(event) => setAmount(event.target.value)}
+                        placeholder="Enter amount in INR"
+                        aria-label="Custom donation amount in rupees"
+                        autoFocus
+                      />
+                    </div>
+                  </label>
+                )}
+
+                <label className="donation-input-label">
+                  <span>Donation purpose</span>
+                  <select
+                    value={purpose}
+                    onChange={(event) => setPurpose(event.target.value)}
+                  >
+                    <option>General Fund</option>
+                    <option>Education</option>
+                    <option>Women Empowerment</option>
+                    <option>Healthcare</option>
+                    <option>Nutrition</option>
+                    <option>Skill Development</option>
+                  </select>
+                </label>
+
+                <button
+                  type="button"
+                  className="donation-primary-button"
+                  disabled={!amount || Number(amount) <= 0}
+                  onClick={() => setStep(2)}
+                >
+                  Continue to Details
+                </button>
+              </div>
+            ) : (
+              <form className="donation-step-content" onSubmit={handlePayment}>
+                <div className="donation-summary">
+                  <span>Donation · {purpose}</span>
+                  <strong>₹{Number(amount).toLocaleString("en-IN")}</strong>
+                  <button type="button" onClick={() => setStep(1)}>
+                    Change
+                  </button>
+                </div>
+
+                <div className="donation-details-grid">
+                  <label className="donation-input-label">
+                    <span>Full name</span>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                      autoComplete="name"
+                      required
+                    />
+                  </label>
+                  <label className="donation-input-label">
+                    <span>Email address</span>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      autoComplete="email"
+                      required
+                    />
+                  </label>
+                  <label className="donation-input-label donation-phone-field">
+                    <span>Mobile number</span>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(event) =>
+                        setPhone(
+                          event.target.value.replace(/\D/g, "").slice(0, 10),
+                        )
+                      }
+                      autoComplete="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]{10}"
+                      maxLength="10"
+                      placeholder="10-digit mobile number"
+                      required
+                    />
+                  </label>
+                </div>
+
+                <p className="donation-secure-note">
+                  Your details will be shared with Razorpay to process your
+                  donation.
+                </p>
+
+                {paymentError && (
+                  <p className="donation-payment-error" role="alert">
+                    {paymentError}
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  className="donation-primary-button"
+                  disabled={isPaying}
+                >
+                  {isPaying
+                    ? "Opening Razorpay..."
+                    : `Pay ₹${Number(amount).toLocaleString("en-IN")} with Razorpay`}
+                </button>
+                <button
+                  type="button"
+                  className="donation-back-button"
+                  onClick={() => setStep(1)}
+                  disabled={isPaying}
+                >
+                  Back to donation details
+                </button>
+              </form>
+            )}
+
+            <div className="donation-alternative-payments">
+              <section
+                className="donation-bank-section"
+                aria-labelledby="donation-bank-heading"
+              >
+                <div className="donation-alternative-heading">
+                  <span className="donation-payment-icon" aria-hidden="true">
+                    ▤
+                  </span>
+                  <div>
+                    <h3 id="donation-bank-heading">Direct Bank Transfer</h3>
+                    <p>You can also donate directly to our bank account</p>
+                  </div>
+                </div>
+
+                <div className="donation-bank-details">
+                  <div className="donation-bank-detail">
+                    <span>Account Name</span>
+                    <strong>People Seva Foundation</strong>
+                  </div>
+                  <div className="donation-bank-detail">
+                    <span>Account Number</span>
+                    <strong>****************</strong>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopy("************", "Account number")
+                      }
+                    >
+                      {copyStatus === "Account number copied"
+                        ? "Copied"
+                        : "Copy"}
+                    </button>
+                  </div>
+                  <div className="donation-bank-detail">
+                    <span>IFSC Code</span>
+                    <strong>HDFC000*****</strong>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy("HDFC000*****", "IFSC code")}
+                    >
+                      {copyStatus === "IFSC code copied" ? "Copied" : "Copy"}
+                    </button>
+                  </div>
+                  <div className="donation-bank-detail">
+                    <span>Branch</span>
+                    <strong>Telangana, Hyderabad</strong>
+                  </div>
+                </div>
+
+                <div className="donation-bank-thanks">
+                  <strong>Thank you for choosing to donate!</strong>
+                  <p>
+                    After making the transfer, send us a screenshot or
+                    transaction details at{" "}
+                    <a href="mailto:peopleservafoundation@gmail.com">
+                      peopleservafoundation@gmail.com
+                    </a>{" "}
+                    or WhatsApp us at{" "}
+                    <a
+                      href="https://wa.me/918886166565"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      +91 88861 66565
+                    </a>{" "}
+                    to help us acknowledge your contribution.
+                  </p>
+                </div>
+              </section>
+
+              <section
+                className="donation-upi-section"
+                aria-labelledby="donation-upi-heading"
+              >
+                <div className="donation-upi-heading">
+                  <span className="donation-payment-icon" aria-hidden="true">
+                    ▦
+                  </span>
+                  <h3 id="donation-upi-heading">Scan &amp; Pay with UPI</h3>
+                  <p>
+                    Support us instantly using any UPI app (GPay, PhonePe,
+                    Paytm, etc.)
+                  </p>
+                </div>
+                <div className="donation-upi-content">
+                  <a
+                    className="donation-qr-link"
+                    href={`upi://pay?${upiPaymentUri}`}
+                    aria-label="Open this donation in a UPI app"
+                  >
+                    <img
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+                        `upi://pay?${upiPaymentUri}`,
+                      )}`}
+                      alt="People Seva Foundation UPI payment QR code"
+                      loading="lazy"
+                    />
+                  </a>
+                  <div className="donation-upi-id">
+                    <div>
+                      <span>UPI ID</span>
+                      <strong>peopleservafoundation0@*****</strong>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopy("peopleservafoundation0@*****", "UPI ID")
+                      }
+                    >
+                      {copyStatus === "UPI ID copied" ? "Copied" : "Copy"}
+                    </button>
+                  </div>
+                  <p className="donation-upi-powered">
+                    Powered by <strong>GPay</strong> &amp; others
+                  </p>
+                </div>
+              </section>
+
+              {copyStatus && (
+                <p className="donation-copy-status" role="status">
+                  {copyStatus}
+                </p>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
