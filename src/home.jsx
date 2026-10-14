@@ -37,7 +37,7 @@ function ImpactStat({ value }) {
   );
 }
 
-export default function Home({ onDonateClick }) {
+export default function Home() {
   return (
     <>
       <section className="hero hero-full-bg">
@@ -62,13 +62,9 @@ export default function Home({ onDonateClick }) {
               care, education, wellbeing, and opportunity.
             </p>
             <div className="hero-actions">
-              <button
-                type="button"
-                className="hero-btn-donate"
-                onClick={onDonateClick}
-              >
+              <a className="hero-btn-donate" href="/donate">
                 Donate Now <span className="btn-icon">♥</span>
-              </button>
+              </a>
               <a className="hero-btn-primary" href="/about">
                 Our Programs <Arrow />
               </a>
@@ -210,13 +206,9 @@ export default function Home({ onDonateClick }) {
             healthcare, and community support where it matters most.
           </p>
         </div>
-        <button
-          type="button"
-          className="button button-orange"
-          onClick={onDonateClick}
-        >
+        <a className="button button-orange" href="/donate">
           Donate now <Arrow />
-        </button>
+        </a>
       </section>
 
       <BlogPreview />

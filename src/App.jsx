@@ -6,13 +6,18 @@ import Volunteer from "./volunteer";
 import Contact from "./contact";
 import Blogs from "./blogs";
 import Faqs from "./faqs";
-import logoAnimation from "./assets/logo_animation.mp4";
+import logo from "./assets/logoo.png";
 import { useCallback, useEffect, useState } from "react";
 
 function BrandIntro({ onComplete }) {
   useEffect(() => {
-    const fallback = window.setTimeout(onComplete, 6000);
-    return () => window.clearTimeout(fallback);
+    if (document.readyState === "complete") {
+      onComplete();
+      return undefined;
+    }
+
+    window.addEventListener("load", onComplete, { once: true });
+    return () => window.removeEventListener("load", onComplete);
   }, [onComplete]);
 
   return (
@@ -21,16 +26,16 @@ function BrandIntro({ onComplete }) {
       role="status"
       aria-label="Loading People Seva Foundation"
     >
-      <video
-        className="brand-intro-video"
-        src={logoAnimation}
-        autoPlay
-        preload="auto"
-        muted
-        playsInline
-        onEnded={onComplete}
-        onError={onComplete}
-      />
+      <div className="brand-intro-content">
+        <div className="brand-intro-logo-wrap">
+          <img
+            className="brand-intro-logo"
+            src={logo}
+            alt="People Seva Foundation logo"
+          />
+        </div>
+        <p className="brand-intro-name">People Seva Foundation</p>
+      </div>
       <button type="button" className="brand-intro-skip" onClick={onComplete}>
         Skip intro
       </button>
@@ -66,7 +71,7 @@ function loadRazorpayCheckout() {
   return razorpayScriptPromise;
 }
 
-function DonationModal({ isOpen, onClose }) {
+function DonationPage() {
   const [step, setStep] = useState(1);
   const [amount, setAmount] = useState("");
   const [isCustomAmount, setIsCustomAmount] = useState(false);
@@ -78,43 +83,6 @@ function DonationModal({ isOpen, onClose }) {
   const [paymentError, setPaymentError] = useState("");
   const [paymentReference, setPaymentReference] = useState("");
   const [copyStatus, setCopyStatus] = useState("");
-
-  const handleClose = useCallback(() => {
-    setStep(1);
-    setAmount("");
-    setIsCustomAmount(false);
-    setPurpose("General Fund");
-    setName("");
-    setPhone("");
-    setEmail("");
-    setIsPaying(false);
-    setPaymentError("");
-    setPaymentReference("");
-    setCopyStatus("");
-    onClose();
-  }, [onClose]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") handleClose();
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, handleClose]);
 
   const handlePayment = async (event) => {
     event.preventDefault();
@@ -185,29 +153,8 @@ function DonationModal({ isOpen, onClose }) {
   }).toString();
 
   return (
-    <div
-      className={`donation-modal-overlay donation-modal-overlay-flow ${
-        isOpen ? "open" : ""
-      }`}
-      onClick={handleClose}
-      aria-hidden={!isOpen}
-    >
-      <div
-        className="donation-modal donation-modal-flow"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Donation form"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <button
-          type="button"
-          className="modal-close"
-          onClick={handleClose}
-          aria-label="Close donation form"
-        >
-          ×
-        </button>
-
+    <div className="donation-page-shell">
+      <div className="donation-page-card donation-modal-flow">
         {paymentReference ? (
           <div className="donation-payment-success" role="status">
             <span className="donation-success-icon" aria-hidden="true">
@@ -225,13 +172,9 @@ function DonationModal({ isOpen, onClose }) {
               server-side yet. Please contact the foundation to confirm your
               donation.
             </p>
-            <button
-              type="button"
-              className="donation-primary-button"
-              onClick={handleClose}
-            >
-              Done
-            </button>
+            <a className="donation-primary-button" href="/">
+              Back to home
+            </a>
           </div>
         ) : (
           <>
@@ -591,6 +534,11 @@ const seoByPage = {
     description:
       "Find answers about People Seva Foundation programmes, donations, volunteering, and community support.",
   },
+  "/donate": {
+    title: "Donate | People Seva Foundation",
+    description:
+      "Support People Seva Foundation through an online donation, direct bank transfer, or UPI payment.",
+  },
 };
 
 function updateMetaTag(attribute, value, content) {
@@ -604,12 +552,13 @@ function updateMetaTag(attribute, value, content) {
 }
 
 function App() {
-  const [isDonationOpen, setIsDonationOpen] = useState(false);
   const page =
     window.location.pathname === "/"
       ? "/"
       : `/${window.location.pathname.split("/")[1]}`;
-  const [showBrandIntro, setShowBrandIntro] = useState(page === "/");
+  const [showBrandIntro, setShowBrandIntro] = useState(
+    document.readyState !== "complete",
+  );
 
   useEffect(() => {
     const seo = seoByPage[page] || seoByPage["/"];
@@ -619,34 +568,27 @@ function App() {
     updateMetaTag("property", "og:description", seo.description);
   }, [page]);
 
-  const completeBrandIntro = () => {
+  const completeBrandIntro = useCallback(() => {
     setShowBrandIntro(false);
-  };
+  }, []);
 
   const pages = {
-    "/": <Home onDonateClick={() => setIsDonationOpen(true)} />,
+    "/": <Home />,
     "/about": <AboutUs />,
     "/volunteer": <Volunteer />,
     "/contact": <Contact />,
     "/blogs": <Blogs />,
     "/faqs": <Faqs />,
+    "/donate": <DonationPage />,
   };
 
   return (
     <>
-      {page === "/" && showBrandIntro && (
-        <BrandIntro onComplete={completeBrandIntro} />
-      )}
-      <Header activePage={page} onDonateClick={() => setIsDonationOpen(true)} />
-      <main>
-        {pages[page] || <Home onDonateClick={() => setIsDonationOpen(true)} />}
-      </main>
+      {showBrandIntro && <BrandIntro onComplete={completeBrandIntro} />}
+      <Header activePage={page} />
+      <main>{pages[page] || <Home />}</main>
       <Footer />
       <FloatingActions />
-      <DonationModal
-        isOpen={isDonationOpen}
-        onClose={() => setIsDonationOpen(false)}
-      />
     </>
   );
 }

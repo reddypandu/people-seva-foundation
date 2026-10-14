@@ -87,7 +87,7 @@ export function Arrow() {
   );
 }
 
-export function Header({ activePage, onDonateClick }) {
+export function Header({ activePage }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [language, setLanguage] = useState(
     () => window.localStorage.getItem("people-seva-language") || "en",
@@ -266,9 +266,9 @@ export function Header({ activePage, onDonateClick }) {
             ))}
           </select>
         </label>
-        <button type="button" className="header-cta" onClick={onDonateClick}>
+        <a className="header-cta" href="/donate">
           {labels.donate} <Arrow />
-        </button>
+        </a>
       </div>
     </header>
   );
