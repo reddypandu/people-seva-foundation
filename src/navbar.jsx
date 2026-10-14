@@ -133,6 +133,77 @@ export function Header({ activePage, onDonateClick }) {
     }
   }, []);
 
+  useEffect(() => {
+    const clearTranslateHighlight = (element) => {
+      if (!(element instanceof HTMLElement)) {
+        return;
+      }
+
+      const isGoogleHighlight =
+        element.classList.contains("goog-text-highlight") ||
+        (element.tagName === "FONT" &&
+          (element.style.background !== "" ||
+            element.style.backgroundColor !== "" ||
+            element.style.backgroundImage !== "" ||
+            element.style.boxShadow !== ""));
+
+      if (!isGoogleHighlight) return;
+
+      element.classList.remove("goog-text-highlight");
+      element.style.removeProperty("background");
+      element.style.removeProperty("background-color");
+      element.style.removeProperty("background-image");
+      element.style.removeProperty("box-shadow");
+    };
+
+    const clearHighlightsIn = (node) => {
+      if (!(node instanceof HTMLElement)) return;
+
+      clearTranslateHighlight(node);
+      node
+        .querySelectorAll(
+          ".goog-text-highlight, font[style*='background'], font[style*='box-shadow']",
+        )
+        .forEach(clearTranslateHighlight);
+    };
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "childList") {
+          mutation.addedNodes.forEach(clearHighlightsIn);
+        } else if (mutation.target instanceof HTMLElement) {
+          clearTranslateHighlight(mutation.target);
+        }
+      });
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class", "style"],
+      childList: true,
+      subtree: true,
+    });
+
+    const blockTranslateHover = (event) => {
+      if (!(event.target instanceof Element)) return;
+
+      const translatedText = event.target.closest("font");
+      if (!translatedText) return;
+
+      clearTranslateHighlight(translatedText);
+      event.stopImmediatePropagation();
+    };
+
+    document.addEventListener("mouseover", blockTranslateHover, true);
+    document.addEventListener("pointerover", blockTranslateHover, true);
+    clearHighlightsIn(document.body);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("mouseover", blockTranslateHover, true);
+      document.removeEventListener("pointerover", blockTranslateHover, true);
+    };
+  }, []);
+
   const translatedNavItems = [
     { label: labels.home, href: "/" },
     { label: labels.work, href: "/about" },

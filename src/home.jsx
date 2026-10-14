@@ -2,7 +2,6 @@ import { Arrow } from "./navbar";
 import HeroImg from "./assets/hero-img.png";
 import { BlogPreview } from "./blogs";
 import { FaqPreview } from "./faqs";
-import { useEffect, useRef, useState } from "react";
 import AboutImg from "./assets/about-section-img.png";
 
 const impactStats = [
@@ -30,62 +29,10 @@ const programs = [
   },
 ];
 
-function AnimatedStat({ value }) {
-  const [count, setCount] = useState(0);
-  const statRef = useRef(null);
-
-  useEffect(() => {
-    const element = statRef.current;
-    if (!element) return undefined;
-
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    let animationFrame;
-    let hasStarted = false;
-
-    const startCounting = () => {
-      if (hasStarted) return;
-      hasStarted = true;
-
-      if (prefersReducedMotion) {
-        setCount(value);
-        return;
-      }
-
-      const duration = 1500;
-      const startTime = performance.now();
-
-      const updateCount = (currentTime) => {
-        const progress = Math.min((currentTime - startTime) / duration, 1);
-        const easedProgress = 1 - Math.pow(1 - progress, 3);
-        setCount(Math.round(value * easedProgress));
-
-        if (progress < 1) {
-          animationFrame = requestAnimationFrame(updateCount);
-        }
-      };
-
-      animationFrame = requestAnimationFrame(updateCount);
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) startCounting();
-      },
-      { threshold: 0.45 },
-    );
-    observer.observe(element);
-
-    return () => {
-      observer.disconnect();
-      if (animationFrame) cancelAnimationFrame(animationFrame);
-    };
-  }, [value]);
-
+function ImpactStat({ value }) {
   return (
-    <strong ref={statRef} aria-label={`${value}+`}>
-      {count}+
+    <strong aria-label={`${value.toLocaleString("en-IN")}+`}>
+      {value.toLocaleString("en-IN")}+
     </strong>
   );
 }
@@ -159,7 +106,7 @@ export default function Home({ onDonateClick }) {
       <section className="impact-strip">
         {impactStats.map((item) => (
           <div className="impact-item" key={item.label}>
-            <AnimatedStat value={item.value} />
+            <ImpactStat value={item.value} />
             <span>{item.label}</span>
           </div>
         ))}

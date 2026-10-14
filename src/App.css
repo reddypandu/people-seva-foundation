@@ -184,9 +184,20 @@ textarea {
   display: none !important;
 }
 
-.goog-text-highlight {
+.goog-text-highlight,
+html body .goog-text-highlight,
+html body font.goog-text-highlight,
+html body .goog-text-highlight:hover,
+html body font.goog-text-highlight:hover,
+html body font[style*="background"],
+html body font[style*="background"]:hover,
+html body font[style*="box-shadow"] {
   background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
   box-shadow: none !important;
+  outline: none !important;
+  pointer-events: none !important;
 }
 
 body {
