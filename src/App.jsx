@@ -6,6 +6,7 @@ import Volunteer from "./volunteer";
 import Contact from "./contact";
 import Blogs from "./blogs";
 import Faqs from "./faqs";
+import Gallery from "./gallery";
 import logo from "./assets/logoo.png";
 import { useCallback, useEffect, useState } from "react";
 
@@ -426,16 +427,16 @@ function DonationPage() {
                   <p>
                     After making the transfer, send us a screenshot or
                     transaction details at{" "}
-                    <a href="mailto:peopleservafoundation@gmail.com">
-                      peopleservafoundation@gmail.com
+                    <a href="mailto:peopleservafoundation1984@gmail.com">
+                      peopleservafoundation1984@gmail.com
                     </a>{" "}
                     or WhatsApp us at{" "}
                     <a
-                      href="https://wa.me/918886166565"
+                      href="https://wa.me/919642244005"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      +91 88861 66565
+                      +919642244005
                     </a>{" "}
                     to help us acknowledge your contribution.
                   </p>
@@ -529,6 +530,11 @@ const seoByPage = {
     description:
       "Read People Seva Foundation stories, field notes, community updates, and ideas from the people behind our work.",
   },
+  "/gallery": {
+    title: "Gallery | People Seva Foundation",
+    description:
+      "Explore photos of People Seva Foundation's community work, people, and activities.",
+  },
   "/faqs": {
     title: "FAQs | People Seva Foundation",
     description:
@@ -578,6 +584,7 @@ function App() {
     "/volunteer": <Volunteer />,
     "/contact": <Contact />,
     "/blogs": <Blogs />,
+    "/gallery": <Gallery />,
     "/faqs": <Faqs />,
     "/donate": <DonationPage />,
   };
