@@ -4,7 +4,7 @@ import { blogPosts } from "./blog-data";
 function BlogCard({ post }) {
   return (
     <article className="blog-card">
-      <img src={post.image} alt="" />
+      <img src={post.image} alt={post.alt} loading="lazy" />
       <div className="blog-card-body">
         <div className="blog-meta">
           <span>{post.category}</span>

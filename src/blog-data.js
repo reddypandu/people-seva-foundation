@@ -1,56 +1,63 @@
+import CommunityMealImg from "./assets/people-seva-foundation2.jpeg";
+import CommunityOutreachImg from "./assets/people-seva-foundation6.jpeg";
+import FoodSupportImg from "./assets/people-seva-foundation28.jpeg";
+import CommunityMeetingImg from "./assets/people-seva-foundation50.jpeg";
+import RecognitionImg from "./assets/people-seva-foundation41.jpeg";
+import PartnershipImg from "./assets/people-seva-foundation64.jpeg";
+
 export const blogPosts = [
   {
     category: "Community care",
     date: "18 Sep 2026",
-    title: "Small acts that make support feel closer",
+    title: "Sharing a meal with care",
     excerpt:
-      "How consistent listening, care, and local action help families move forward with confidence.",
-    image:
-      "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=900&q=85",
+      "A moment from a community visit, where volunteers come together to share food and offer support.",
+    image: CommunityMealImg,
+    alt: "People Seva volunteers sharing meal packets during a community visit",
   },
   {
-    category: "Education",
+    category: "Community outreach",
     date: "06 Sep 2026",
-    title: "Learning is the beginning of every possibility",
+    title: "Showing up together for our neighbours",
     excerpt:
-      "A look at the people and programmes helping learners build skills, self-belief, and opportunity.",
-    image:
-      "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=85",
+      "Local volunteers gather in the neighbourhood, reminding us that community support starts by being present.",
+    image: CommunityOutreachImg,
+    alt: "People Seva volunteers gathering in a neighbourhood street",
   },
   {
-    category: "Stories of change",
+    category: "Food support",
     date: "28 Aug 2026",
-    title: "When a community chooses to stand together",
+    title: "Fresh food, shared with care",
     excerpt:
-      "The everyday partnerships that turn compassion into practical, lasting support.",
-    image:
-      "https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=900&q=85",
+      "Volunteers sort fresh produce together as part of a hands-on community food-support effort.",
+    image: FoodSupportImg,
+    alt: "Volunteers sorting bags of fresh produce for community support",
   },
   {
-    category: "Wellbeing",
+    category: "Community gathering",
     date: "12 Aug 2026",
-    title: "Care is more than a moment",
+    title: "Making space for community voices",
     excerpt:
-      "Why continuity, dignity, and emotional safety matter in every support journey.",
-    image:
-      "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=900&q=85",
+      "A community meeting brings people together to speak, listen, and share ideas for local progress.",
+    image: CommunityMeetingImg,
+    alt: "A speaker addressing attendees at a People Seva community meeting",
   },
   {
-    category: "Livelihoods",
+    category: "Recognition",
     date: "30 Jul 2026",
-    title: "Skills that create a stronger tomorrow",
+    title: "Recognising commitment to community service",
     excerpt:
-      "Practical learning and mentorship can open doors to independence and confidence.",
-    image:
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85",
+      "Community members come together to acknowledge service and the people who give their time to others.",
+    image: RecognitionImg,
+    alt: "Community members presenting a certificate during a recognition gathering",
   },
   {
-    category: "Field notes",
+    category: "Community partnership",
     date: "16 Jul 2026",
-    title: "Listening first, then building together",
+    title: "Building partnership face to face",
     excerpt:
-      "What grassroots work teaches us about designing support around real lives.",
-    image:
-      "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=900&q=85",
+      "A shared moment of connection reflects the relationships that help community work move forward.",
+    image: PartnershipImg,
+    alt: "People Seva members meeting and shaking hands during a community visit",
   },
 ];

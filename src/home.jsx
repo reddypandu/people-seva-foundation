@@ -6,44 +6,44 @@ import { FaqPreview } from "./faqs";
 import AboutImg from "./assets/hero-img3.png";
 import AboutImgg from "./assets/about-section-img.png";
 import CommunityImg from "./assets/hero-img2.png";
-import OutreachImg from "./assets/people-seva-foundation10.jpeg";
-import CommunitySupportImg from "./assets/people-seva-foundation28.jpeg";
-import LocalCareImg from "./assets/people-seva-foundation50.jpeg";
-import PartnerVisitImg from "./assets/people-seva-foundation6.jpeg";
+import CommunityVisitImg from "./assets/people-seva-foundation14.jpeg";
+import NeighbourhoodVisitImg from "./assets/people-seva-foundation23.jpeg";
+import CommunityConversationImg from "./assets/people-seva-foundation35.jpeg";
+import CommunityGatheringImg from "./assets/people-seva-foundation48.jpeg";
 import { useEffect, useState } from "react";
 
 const foundationMoments = [
   {
-    image: OutreachImg,
-    alt: "People Seva Foundation volunteers gathered during a community outreach activity",
-    category: "Community outreach",
-    title: "Showing up for our community",
+    image: CommunityVisitImg,
+    alt: "People Seva Foundation members meeting with local community representatives",
+    category: "Community engagement",
+    title: "Listening begins with a conversation",
     description:
-      "Our team works alongside local communities, offering support with care and respect.",
+      "Face-to-face visits create space to hear community perspectives and build stronger local connections.",
   },
   {
-    image: CommunitySupportImg,
-    alt: "A volunteer offering a meal during a community service activity",
-    category: "Care in action",
-    title: "Small acts of care matter",
+    image: NeighbourhoodVisitImg,
+    alt: "People Seva Foundation volunteers visiting a neighbourhood shop",
+    category: "Neighbourhood visits",
+    title: "Getting to know the neighbourhood",
     description:
-      "Every thoughtful gesture helps build connection and bring practical support closer to people.",
+      "Spending time in local neighbourhoods helps our volunteers connect with people in the places they know.",
   },
   {
-    image: LocalCareImg,
-    alt: "A foundation volunteer speaking with community members during outreach",
-    category: "Local support",
-    title: "Listening and lending a hand",
+    image: CommunityConversationImg,
+    alt: "Community members gathered around a table for a conversation",
+    category: "Community gathering",
+    title: "Making room for shared ideas",
     description:
-      "We meet people where they are and work together to understand what support is needed.",
+      "Coming together gives people the opportunity to exchange perspectives and strengthen community ties.",
   },
   {
-    image: PartnerVisitImg,
-    alt: "Foundation team members meeting community partners",
-    category: "Working together",
-    title: "Stronger through partnership",
+    image: CommunityGatheringImg,
+    alt: "A large group of community members gathered at an event",
+    category: "Together as a community",
+    title: "Many voices, a shared purpose",
     description:
-      "Collaboration with local partners helps us make community-led support go further.",
+      "A community gathering reflects the people and shared commitment behind local initiatives.",
   },
 ];
 
@@ -56,14 +56,6 @@ const heroSlides = [
     emphasis: "honouring dedication, and inspiring change.",
     description:
       "We recognize the people who dedicate their time and efforts to building stronger, more caring communities.",
-    impactLabel: "Our mission",
-    impactValue: "Community First",
-    impactDescription: "Inspiring people through service and recognition.",
-    highlights: [
-      "Community Service",
-      "Honouring Dedication",
-      "Inspiring Change",
-    ],
   },
   {
     image: EducationImg,
@@ -73,10 +65,6 @@ const heroSlides = [
     emphasis: "building a brighter future for every community.",
     description:
       "We bring people together to promote unity, encourage participation, and create meaningful social change.",
-    impactLabel: "Our approach",
-    impactValue: "Together We Grow",
-    impactDescription: "Building connections and empowering communities.",
-    highlights: ["Unity", "Empowerment", "Social Welfare"],
   },
   {
     image: AboutImg,
@@ -86,14 +74,6 @@ const heroSlides = [
     emphasis: "every contribution makes a difference.",
     description:
       "We support community initiatives that encourage dignity, equal opportunities, and active participation in social development.",
-    impactLabel: "Our purpose",
-    impactValue: "Positive Change",
-    impactDescription: "Turning community efforts into meaningful progress.",
-    highlights: [
-      "Equal Opportunities",
-      "Active Participation",
-      "Community Growth",
-    ],
   },
   {
     image: CommunityImg,
@@ -103,10 +83,6 @@ const heroSlides = [
     emphasis: "with compassion, commitment, and hope.",
     description:
       "We strive to create a caring society by encouraging volunteerism, recognizing dedicated individuals, and supporting community development.",
-    impactLabel: "Our commitment",
-    impactValue: "A Better Tomorrow",
-    impactDescription: "Encouraging service and creating lasting impact.",
-    highlights: ["Compassion", "Commitment", "Lasting Impact"],
   },
 ];
 
@@ -252,23 +228,6 @@ export default function Home() {
                 About Us
               </a>
             </div>
-            <div className="hero-proof" aria-label="Slide highlights">
-              {currentHeroSlide.highlights.map((highlight, index) => (
-                <span key={highlight}>
-                  <strong>0{index + 1}</strong> {highlight}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="hero-right-action">
-            <div className="hero-reach-pill">
-              <span className="reach-label">
-                {currentHeroSlide.impactLabel}
-              </span>
-              <strong>{currentHeroSlide.impactValue}</strong>
-              <small>{currentHeroSlide.impactDescription}</small>
-            </div>
           </div>
         </div>
         <div className="hero-carousel-controls">
@@ -392,12 +351,12 @@ export default function Home() {
       >
         <div className="foundation-gallery-heading">
           <div>
-            <p className="eyebrow">People Seva Foundation · In action</p>
-            <h2>Our work, through the moments that matter.</h2>
+            <p className="eyebrow">People Seva Foundation · Across the community</p>
+            <h2>Everyday moments, shared purpose.</h2>
           </div>
           <p>
-            A look at the people, partnerships, and acts of care that bring our
-            community work to life.
+            From neighbourhood visits to community gatherings, these moments
+            capture the connections behind our work.
           </p>
         </div>
 
