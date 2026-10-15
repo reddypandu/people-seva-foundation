@@ -4,7 +4,7 @@ import EducationImg from "./assets/hero-img4.png";
 import { BlogPreview } from "./blogs";
 import { FaqPreview } from "./faqs";
 import AboutImg from "./assets/hero-img3.png";
-import AboutImgg from "./assets/about-section-img.png";
+import AboutImgg from "./assets/home-about-img.png";
 import CommunityImg from "./assets/hero-img2.png";
 import CommunityVisitImg from "./assets/people-seva-foundation14.jpeg";
 import NeighbourhoodVisitImg from "./assets/people-seva-foundation23.jpeg";
@@ -351,7 +351,9 @@ export default function Home() {
       >
         <div className="foundation-gallery-heading">
           <div>
-            <p className="eyebrow">People Seva Foundation · Across the community</p>
+            <p className="eyebrow">
+              People Seva Foundation · Across the community
+            </p>
             <h2>Everyday moments, shared purpose.</h2>
           </div>
           <p>

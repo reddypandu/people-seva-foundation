@@ -1,4 +1,4 @@
-import AboutPageImg from "./assets/about-page.png";
+import AboutPageImg from "./assets/hero-img5.png";
 
 export default function AboutUs() {
   return (

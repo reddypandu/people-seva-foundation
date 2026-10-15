@@ -1209,7 +1209,7 @@ h3 {
   }
 
   .hero-copy {
-    margin-bottom: 72px;
+    margin-bottom: 2px;
   }
 
   .hero h1 {
@@ -1282,7 +1282,7 @@ h3 {
 
   .site-footer {
     padding: 50px 8% 22px;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 35px 25px;
   }
 
@@ -3222,7 +3222,7 @@ body,
 @media (max-width: 960px) {
   .hero.hero-full-bg {
     min-height: auto;
-    padding: 80px 6% 120px;
+    padding: 80px 6% 40px;
   }
 
   .hero-full-bg .hero-container {
@@ -4040,7 +4040,11 @@ body,
 .gallery-heading {
   padding: clamp(64px, 9vw, 110px) 8% 52px;
   background:
-    radial-gradient(circle at 85% 12%, rgba(200, 104, 61, 0.14), transparent 25%),
+    radial-gradient(
+      circle at 85% 12%,
+      rgba(200, 104, 61, 0.14),
+      transparent 25%
+    ),
     #fff7f2;
   text-align: center;
 }
